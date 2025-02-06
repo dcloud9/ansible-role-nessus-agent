@@ -1,0 +1,12 @@
+- name: Ensure Nessus agent is started
+  ansible.builtin.systemd:
+    name: nessus-agent
+    state: started
+    enabled: yes
+  listen: Start Nessus agent
+
+- name: Enable Nessus agent service
+  ansible.builtin.systemd:
+    name: nessus-agent
+    enabled: yes
+  listen: Enable Nessus agent

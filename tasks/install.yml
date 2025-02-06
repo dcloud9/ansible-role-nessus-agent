@@ -1,0 +1,65 @@
+---
+- name: Nessus agent | Install | Gather OS and architecture facts
+  ansible.builtin.setup:
+    gather_subset:
+      - 'distribution'
+      - 'architecture'
+
+- name: Nessus agent | Install | Set OS-specific variables
+  ansible.builtin.set_fact:
+    nessus_package_name: "{{ nessus_agent_packages[ansible_architecture][ansible_distribution][ansible_distribution_major_version] }}"
+    nessus_checksum: "{{ nessus_agent_checksums[ansible_architecture][ansible_distribution][ansible_distribution_major_version] | default(None)}}"
+  when:
+    - ansible_architecture in nessus_agent_packages
+    - ansible_distribution in nessus_agent_packages[ansible_architecture]
+    - ansible_distribution_major_version in nessus_agent_packages[ansible_architecture][ansible_distribution]
+
+- name: Nessus agent | Install | Check if Nessus Agent is installed
+  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli agent status
+  register: nessus_status
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Nessus agent | Install | Get installed Nessus Agent version
+  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli --version
+  register: nessus_version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  # Edge case when it's acceptable that Nessus agent is fully installed but not configured to link to global database.
+  # ToDo on configure.yml
+  when: >
+    nessus_status.rc == 0 or
+    (nessus_status.rc == 2 and "'Failed to open global database' in nessus_status.stdout")
+
+- name: Nessus agent | Install | Set current version fact
+  ansible.builtin.set_fact:
+    current_version: "{{ nessus_version.stdout.split()[-1] }}"
+  when:
+    - nessus_status.rc == 0
+    - nessus_version.rc == 0
+
+- block:
+
+  - name: Nessus agent | Install | Download Nessus Agent package if not yet installed/updated
+    ansible.builtin.get_url:
+      url: "https://www.tenable.com/downloads/api/v2/pages/nessus-agents/files/{{ nessus_package_name }}"
+      dest: "/tmp/{{ nessus_package_name }}"
+      checksum: "{{ nessus_checksum }}"
+
+  - name: Nessus agent | Install | Install/Update Nessus Agent package
+    ansible.builtin.yum:
+      name: "/tmp/{{ nessus_package_name }}"
+      state: present
+      disable_gpg_check: true
+    ignore_errors: "{{ ansible_check_mode }}"
+
+  - name: Nessus agent | Install | Clean up downloaded package
+    ansible.builtin.file:
+      path: "/tmp/{{ nessus_package_name }}"
+      state: absent
+
+  when: >
+    (nessus_status.rc != 0 and nessus_version.rc != 0 and nessus_package_name is defined) or
+    (current_version is defined and current_version is version(nessus_agent_version, '<'))

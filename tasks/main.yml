@@ -1,0 +1,14 @@
+---
+- name: Install | Nessus agent
+  import_tasks: install.yml
+  tags: install
+
+- name: Configure | Nessus agent
+  import_tasks: configure.yml
+  tags: configure
+
+- name: Uninstall | Nessus agent
+  import_tasks: uninstall.yml
+  tags:
+    - uninstall
+    - never

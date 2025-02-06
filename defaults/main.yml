@@ -1,0 +1,20 @@
+---
+nessus_agent_version: 10.8.2  # Optional: specify a different version
+
+nessus_agent_packages:
+  x86_64:
+    Amazon:
+      "2": "NessusAgent-{{ nessus_agent_version }}-amzn2.x86_64.rpm"
+      "2023": "NessusAgent-{{ nessus_agent_version }}-amzn2.x86_64.rpm"
+    Rocky:
+      "8": "NessusAgent-{{ nessus_agent_version }}-el8.x86_64.rpm"
+      "9": "NessusAgent-{{ nessus_agent_version }}-el9.x86_64.rpm"
+
+nessus_agent_checksums: #checksum must match with those in https://www.tenable.com/downloads/nessus-agents
+  x86_64:
+    Amazon:
+      "2": "sha256:9c48b8668d5f97403b35fc7f6beaeb8bb2554af0ed05c83abd699516ce405510"
+      "2023": "sha256:9c48b8668d5f97403b35fc7f6beaeb8bb2554af0ed05c83abd699516ce405510"
+    Rocky:
+      "8": "sha256:12ca7c81e25928952627fcffbe2c400fbb496743409195bc7fe1e52c0931c7de"
+      "9": "sha256:287e3e48954f460f0f60c1f40b5055665b25ef633dae4a595d54bd414de336b4"

@@ -1,0 +1,5 @@
+---
+- name: Nessus agent | Uninstall | Remove Nessus Agent
+  ansible.builtin.yum:
+    name: NessusAgent
+    state: absent
