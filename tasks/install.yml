@@ -35,7 +35,7 @@
 
 - name: Nessus agent | Install | Set current version fact
   ansible.builtin.set_fact:
-    current_version: "{{ nessus_version.stdout.split()[-1] }}"
+    current_version: "{{ nessus_version.stdout | regex_search('(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)') }}" #search for major.minor.oatch (semver)
   when:
     - nessus_status.rc == 0
     - nessus_version.rc == 0
@@ -54,6 +54,9 @@
       state: present
       disable_gpg_check: true
     ignore_errors: "{{ ansible_check_mode }}"
+    notify:
+      - Enable Nessus agent
+      - Start Nessus agent
 
   - name: Nessus agent | Install | Clean up downloaded package
     ansible.builtin.file:

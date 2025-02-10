@@ -3,16 +3,15 @@ galaxy_info:
   author: Don Capito
   description: Role to manage Tenable Nessus Agent installation
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: "2.9"
   platforms:
-    - name: Amazon
+    - name: Amazon Linux
       versions:
-        - 2
-        - 2023
+        - "2"
+        - "2023"
     - name: EL
       versions:
-        - 8
-        - 9
+        - all
   galaxy_tags:
     - security
     - monitoring

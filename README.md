@@ -10,7 +10,7 @@ This Ansible role automates the installation of the Tenable Nessus agent across 
 * Supports version comparison to ensure minimum version requirements
 
 ### OS Support
-* Handles Amazon Linux 2, Rocky 8 and 9, and can support other `rpm` based packages by extending `nessus_agent_packages` and `nessus_agent_checksums` vars
+* Handles Amazon Linux 2 and 2023, Rocky 8 and 9, and can support other `rpm` based packages by extending `nessus_agent_packages` and `nessus_agent_checksums` vars
 * Uses system facts to determine correct package
 * Architecture-aware (currently set up for x86_64)
 
@@ -79,24 +79,24 @@ This Ansible role automates the installation of the Tenable Nessus agent across 
     ```
     _Sample Output:_
     ```terminaloutput
-    check for added large files..............................................Passed
-    check for merge conflicts................................................Passed
-    check vcs permalinks.....................................................Passed
-    forbid submodules....................................(no files to check)Skipped
-    don't commit to branch...................................................Failed
-    - hook id: no-commit-to-branch
-    - exit code: 1
-    fix end of files.........................................................Passed
-    trim trailing whitespace.................................................Passed
-    check yaml...............................................................Passed
-    check for merge conflicts................................................Passed
-    check that executables have shebangs.................(no files to check)Skipped
-    check json...........................................(no files to check)Skipped
-    pretty format json...................................(no files to check)Skipped
-    fix requirements.txt.................................(no files to check)Skipped
-    check for case conflicts.................................................Passed
-    detect aws credentials...................................................Passed
-    detect private key.......................................................Passed
+      [INFO] Initializing environment for https://github.com/pre-commit/pre-commit-hooks.
+      [INFO] Installing environment for https://github.com/pre-commit/pre-commit-hooks.
+      [INFO] Once installed this environment will be reused.
+      [INFO] This may take a few minutes...
+      check for added large files..............................................Passed
+      check for merge conflicts................................................Passed
+      check vcs permalinks.....................................................Passed
+      forbid submodules....................................(no files to check)Skipped
+      don't commit to branch...................................................Passed
+      fix end of files.........................................................Passed
+      trim trailing whitespace.................................................Passed
+      check yaml...............................................................Passed
+      check for merge conflicts................................................Passed
+      check that executables have shebangs.................(no files to check)Skipped
+      check json...........................................(no files to check)Skipped
+      pretty format json...................................(no files to check)Skipped
+      fix requirements.txt.................................(no files to check)Skipped
+      check for case conflicts.................................................Passed
     ```
 2. Commit and push changes.
 3. Create a Merge request (pull request) for peer review.
