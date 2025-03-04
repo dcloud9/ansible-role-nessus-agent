@@ -36,9 +36,7 @@
 - name: Nessus agent | Install | Set current version fact
   ansible.builtin.set_fact:
     current_version: "{{ nessus_version.stdout | regex_search('(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)') }}" #search for major.minor.oatch (semver)
-  when:
-    - nessus_status.rc == 0
-    - nessus_version.rc == 0
+  when: nessus_version.rc == 0 #Set the fact current_version only when installed or not yet linked to global database.
 
 - block:
 
